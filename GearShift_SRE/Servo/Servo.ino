@@ -1,3 +1,4 @@
+
 // Controlling a servo position using a potentiometer (variable resistor) 
 // by Michal Rinott <http://people.interaction-ivrea.it/m.rinott> 
 
@@ -9,14 +10,15 @@ const int gearbuttonU = 52; //Upshift button connected to pin 5
 const int gearbuttonD = 53; //Downshift button connected to pin 6
 const int usec = 500;
 
-int buttonstate1 = 0;
-int buttonstate2 = 0;
+int buttonstate1 = LOW;
+int buttonstate2 = LOW;
  
 void setup() 
 { 
   myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
-  pinMode(gearbuttonU, INPUT);		//assign gear shift up button as an input
-  pinMode(gearbuttonD, INPUT);		//assign gear shift down button as an input
+  Serial.begin(9600);
+  pinMode(gearbuttonU, INPUT_PULLUP);		//assign gear shift up button as an input
+  pinMode(gearbuttonD, INPUT_PULLUP);		//assign gear shift down button as an input
   myservo.write(90);                    //initalize the shift-arm to middle position
 } 
  
@@ -25,7 +27,7 @@ void loop()
   buttonstate1 = digitalRead(gearbuttonU);
   buttonstate2 = digitalRead(gearbuttonD);
   if (buttonstate1 == HIGH & buttonstate2 == LOW) 
-  {
+  { Serial.println("Up gear engaged");
     if (gear == 0) 
     {
       myservo.write(45);               // sets the servo position out from the neutral position
@@ -45,7 +47,7 @@ void loop()
   }
   
   if (buttonstate1 == LOW & buttonstate2 == HIGH) 
-  {
+  { Serial.println("Down gear works");
     if (gear == 1)
     {
       myservo.write(45);               // sets the servo position to the neutral position
